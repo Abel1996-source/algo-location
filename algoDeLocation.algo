@@ -1,0 +1,53 @@
+ALGORITHM De Location De Voiture
+CONST
+    r1 : FLOAT := 0.7;
+    r2 : FLOAT := 0.4;
+    r3 : FLOAT := 0.2;
+    ins:FLOAT :=0.3; 
+    P_d: FLOAT := 100; 
+    TVA:FLOAT:=0.18 ;
+    P_d:INTEGER:=100;
+VAR
+    km,jours:INTEGER;
+    cout: FLOAT;
+    
+    // forfait limiter
+    FUNCTION limiter(km:INTEGER) : FLOAT
+    BEGIN
+        IF (km<=100) THEN
+            cout:=((km*r1)+(ins*jours))*TVA;
+        ELSE_IF (100<km<1000) THEN
+           cout:=((km*r2)+(ins*jours))*TVA;
+        ELSE
+            cout:=((km*r3)+(ins*jours))*TVA;
+        END_IF
+        RETURN cout ;
+    END 
+    //forfait illimité
+    FUNCTION ilimiter() : FLOAT
+    BEGIN
+        cout:=((P_d*jours)+(ins*jours))*TVA;
+        RETURN cout ;
+    END
+
+    //procedure appellant les deux fonctions et retournant le meilleur tarif
+    PROCEDURE meillerTarif(km:INTEGER ; tarif:FLOAT )
+    VAR
+        coutKm,coutJours:FLOAT;
+    BEGIN
+        coutKm:=limiter(km);
+        coutJours:=ilimiter();
+        IF (coutKm<coutJours) THEN
+            RETURN coutKm;
+        ELSE
+           RETURN coutJours;
+        END_IF
+    END
+BEGIN
+   Write("Entrez le km à parcourir !");
+   Read(km);
+   Write("Entrez le notre de jours !");
+   Read(jours);
+    meillerTarif(km,tarif);
+    Write("Le meilleur tarif est :",tarif);
+END
